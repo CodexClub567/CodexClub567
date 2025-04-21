@@ -1,0 +1,5 @@
+openai
+google-generativeai  # For Gemini (optional)
+elevenlabs
+google-api-python-client
+# Add any other dependencies as needed
