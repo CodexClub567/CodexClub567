@@ -40,7 +40,7 @@ Explain how others can contribute to the project.
 
 ## License
 
-[Link to LICENSE.md]
+[LICENSE]
 
 ## Contact
 
