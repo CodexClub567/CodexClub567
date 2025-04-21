@@ -1,10 +1,22 @@
 import unittest
-from services import fact_checker
+from unittest.mock import patch, mock_open
+from services import audio_processor
 
-class TestFactChecker(unittest.TestCase):
+class TestAudioProcessor(unittest.TestCase):
 
-    def test_check_facts(self):
-        script = "This is a test script."
-        fact_checked_script = fact_checker.check_facts(script)
-        self.assertEqual(fact_checked_script, script)  #  The placeholder returns the original
-        #  In a real test, you would mock the fact-checking API and check the output
+    @patch('elevenlabs.generate')
+    @patch('builtins.open', new_callable=mock_open)
+    def test_generate_audio(self, mock_open, mock_eleven_generate):
+        # Mock the ElevenLabs response
+        mock_eleven_generate.return_value = b"test audio data"
+        elevenlabs_key = "test_elevenlabs_key"
+        script = "Test audio script"
+        audio_file_path = audio_processor.generate_audio(elevenlabs_key, script)
+        self.assertEqual(audio_file_path, "audio.mp3")
+        mock_open.assert_called_once_with("audio.mp3", "wb")
+
+    def test_generate_audio_error(self):
+        elevenlabs_key = "test_elevenlabs_key"
+        script = "Test audio script"
+        audio_file_path = audio_processor.generate_audio(elevenlabs_key, script)
+        self.assertIsNone(audio_file_path)
